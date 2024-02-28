@@ -2,7 +2,6 @@ import { useId } from "react";
 import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import styles from './ContactForm.module.css';
-import { nanoid } from "nanoid";
 import { addContact } from "../../redux/contactsSlice";
 import { useDispatch } from "react-redux";
 
@@ -37,9 +36,8 @@ export default function ContactForm() {
                 validationSchema={userSchema}
                 onSubmit={(values, actions) => {
                   const newContact = {
-                    id: nanoid(),
                     name: values.name.replace(/\b\w/g, (l) => l.toUpperCase()),
-                    number: values.number,
+                    phone: values.number,
                   };
 
                   handleAddContact(newContact);
