@@ -3,13 +3,13 @@ import { FaPhoneAlt } from "react-icons/fa";
 import { Button } from '../Button/Button';
 import styles from './Contact.module.css';
 import { useDispatch } from "react-redux";
-import { deleteContact } from "../../redux/contactsSlice";
+import { deleteContacts } from "../../redux/operations";
 
 export const Contact = ({ contact }) => {
   const dispatch = useDispatch();
 
   const handleDeleteContact = () => {
-    dispatch(deleteContact(contact.id));
+    dispatch(deleteContacts(contact.id));
   };
     
   return (
@@ -19,7 +19,7 @@ export const Contact = ({ contact }) => {
                 <IoPerson className={styles.icon} /><span className={styles.name}>   {contact.name}</span>
             </div>
             <div className={styles.str}>
-                <FaPhoneAlt className={styles.icon} /><span className={styles.number}>   {contact.number}</span>
+                <FaPhoneAlt className={styles.icon} /><span className={styles.number}>   {contact.phone}</span>
             </div>
         </div>
         <Button onClick={handleDeleteContact}>Delete</Button>

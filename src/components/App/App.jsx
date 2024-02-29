@@ -1,10 +1,10 @@
 import styles from './App.module.css';
-import { Phonebook } from '../Phonebook/Phonebook';
+import {Phonebook} from '../Phonebook/Phonebook';
 
-export const App = () => {
+export function App() {
 
   return <div className={styles.container}>
     <Phonebook />
   </div>
-};
+}
 
