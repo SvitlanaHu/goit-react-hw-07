@@ -25,8 +25,8 @@ export function Phonebook() {
           <h1>Phonebook</h1>
           <ContactForm />
           <SearchBox />
-          {isLoading && !error && <Loader />}
           <ContactList />
+          {isLoading && !error && <Loader />}
         </Suspense>
       </div>
     </>

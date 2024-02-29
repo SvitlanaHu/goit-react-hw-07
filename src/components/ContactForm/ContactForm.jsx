@@ -2,28 +2,35 @@ import { useId } from "react";
 import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import styles from './ContactForm.module.css';
+import Button from "../Button/Button";
 import { addContacts } from "../../redux/operations";
 import { useDispatch } from "react-redux";
 
 const userSchema = Yup.object().shape({
   name: Yup.string()
-    .required("Name is required")
-    .min(3, "Minimum 3 characters")
-    .max(50, "Maximum 50 characters"),
+    .required("This is a required field")
+    .min(3, "Name must be at least 3 symbols long")
+    .max(50, "Name must be at less 50 symbols long")
+    .test(
+      "is-not-empty",
+      "Name cannot be just spaces",
+      (value) => value?.trim().length > 0
+    ),
   number: Yup.string()
-    .required("Number is required")
-    .min(3, "Minimum 3 characters")
-    .max(50, "Maximum 50 characters")
+    .required("This is a required field")
+    .min(3, "Phone must be at least 3 symbols long")
+    .max(50, "Phone must be at less 50 symbols long")
     .matches(/^\+?[0-9\s-]+$/, "Invalid phone number"),
 });
 
-export default function ContactForm() {
+const ContactForm = () => {
   const nameField = useId();
   const numberField = useId();
-
   const dispatch = useDispatch();
-  const handleAddContact = (newContact) => {
-    dispatch(addContacts(newContact));
+  const handleAddContact = (values, { setSubmitting, resetForm }) => {
+    dispatch(addContacts(values));
+    setSubmitting(false);
+    resetForm();
   };
 
     return (
@@ -34,19 +41,11 @@ export default function ContactForm() {
                   number: "",
                 }}
                 validationSchema={userSchema}
-                onSubmit={(values, actions) => {
-                  const newContact = {
-                    name: values.name.replace(/\b\w/g, (l) => l.toUpperCase()),
-                    phone: values.number,
-                  };
-
-                  handleAddContact(newContact);
-                  actions.resetForm();
-                }}
+                onSubmit={handleAddContact}
             >
                 <Form className={styles.form} autoComplete="off">
                     <div className={styles.box}>
-                        <label htmlFor={nameField}>Name</label>
+                        <label htmlFor={nameField}>Name:</label>
                         <Field
                             className={styles.label}
                             type="text"
@@ -62,10 +61,9 @@ export default function ContactForm() {
                     </div>
                     
                     <div className={styles.box}>
-                        <label htmlFor={numberField}>Number</label>
+                        <label htmlFor={numberField}>Phone:</label>
                         <Field
                             className={styles.label}
-                            type="text"
                             name="number"
                             placeholder="Number"          
                             id={numberField}
@@ -77,9 +75,11 @@ export default function ContactForm() {
                         />
                     </div>
                     
-                    <button type="submit" className={styles.button}>Add contact</button>
+                    <Button type="submit" className={styles.button}>Add contact</Button>
                 </Form>
             </Formik>
         </div>
     );
-}
+};
+
+export default ContactForm;
