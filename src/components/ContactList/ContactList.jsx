@@ -14,12 +14,12 @@ const ContactList = () => {
     return (
         <div className={styles.container}>
             <ul className={styles.contact}>
-                {filteredContacts.map(({ id, name, phone }) => (
+                {filteredContacts.map(({ id, name, number }) => (
                     <Contact
                         key={id}
                         id={id}
                         name={name}
-                        phone={phone}
+                        number={number}
                         onDelete={() => handleDelete(id)}
                     />
                 ))}
